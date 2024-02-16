@@ -1,0 +1,172 @@
+class ChessPieces
+    attr_accessor :position, :color
+
+    def initialize(position, color)
+        @position = position 
+        @color = color
+    end
+end
+
+class Pawn < ChessPieces
+  def initialize(position, color)
+    super(position, color) 
+    @name = "P" 
+  end
+
+  def name
+    @name
+  end
+
+  def moves
+    if moves_number < 1
+        @moves = [[2, 0], [1, 0]]
+      else
+        @moves = [[1, 0]]
+      end
+    end
+end
+
+class Knight < ChessPieces
+  def initialize(position, color)
+    super(position, color) 
+    @name = "N" 
+  end
+
+  def name
+    @name
+  end
+
+  def moves
+      @moves = [
+        [-1, -2], [-1, 2], [1, -2], [1, 2],
+        [-2, -1], [-2, 1], [2, -1], [2, 1]
+      ]
+  end
+end
+
+class King < ChessPieces
+
+  def initialize(position, color)
+    super(position, color) 
+    @name = "K" 
+  end
+
+  def name
+    @name
+  end
+
+    def moves
+        @moves = [[-1, -1], [-1, 1], [1, -1], [1, 1], [0, 1], [0, -1], [1, 0], [1, -1]]
+    end
+end
+
+class Bishop < ChessPieces
+  def initialize(position, color)
+    super(position, color) 
+    @name = "B" 
+  end
+
+  def name
+    @name
+  end
+  
+    def moves
+      @moves = generate_moves
+    end
+  
+    def generate_moves
+      moves = []
+  
+      directions = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
+  
+      directions.each do |dx, dy|
+        1.upto(7) do |i| 
+          new_move = [@position[0] + dx * i, @position[1] + dy * i]
+          
+          if new_move.all? { |coordinate| coordinate.between?(0, 7) }
+            moves << new_move
+          else
+            break 
+          end
+        end
+      end
+  
+      moves
+    end
+end
+
+class Rook < ChessPieces
+  
+  def initialize(position, color)
+    super(position, color) 
+    @name = "R" 
+  end
+
+  def name
+    @name
+  end
+
+    def moves
+      @moves = generate_moves
+    end
+  
+    def generate_moves
+      moves = []
+  
+      directions = [[0, 1], [0, -1], [1, 0], [1, -1]]
+  
+      directions.each do |dx, dy|
+        1.upto(7) do |i| 
+          new_move = [@position[0] + dx * i, @position[1] + dy * i]
+          
+          if new_move.all? { |coordinate| coordinate.between?(0, 7) }
+            moves << new_move
+          else
+            break 
+          end
+        end
+      end
+  
+      moves
+    end
+end
+
+class Queen < ChessPieces
+
+  def initialize(position, color)
+    super(position, color) 
+    @name = "Q" 
+  end
+
+  def name
+    @name
+  end
+
+    def moves
+      @moves = generate_moves
+    end
+  
+    def generate_moves
+      moves = []
+  
+      directions = [[-1, -1], [-1, 1], [1, -1], [1, 1], [0, 1], [0, -1], [1, 0], [1, -1]]
+  
+      directions.each do |dx, dy|
+        1.upto(7) do |i| 
+          new_move = [@position[0] + dx * i, @position[1] + dy * i]
+          
+          if new_move.all? { |coordinate| coordinate.between?(0, 7) }
+            moves << new_move
+          else
+            break 
+          end
+        end
+      end
+  
+      moves
+    end
+end
+
+
+  
+
