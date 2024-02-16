@@ -9,4 +9,8 @@ class ChessBoard
     def setup_pieces
     end
 
+    def interface
+        
+    end
+
 end
