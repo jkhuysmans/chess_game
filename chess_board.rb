@@ -13,7 +13,7 @@ class ChessBoard
 
         @board.push([1, 2, 3, 4, 5, 6, 7, 8])
 
-        letters = ["a", "b", "c", "d", "e", "f", "g", "h", " "]
+        letters = ["h", "g", "f", "e", "d", "c", "b", "a", " "]
 
         @board.map.with_index do |row, index|
             row.unshift(letters[index])
