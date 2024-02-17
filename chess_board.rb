@@ -10,11 +10,24 @@ class ChessBoard
     end
 
     def display
-        @board.map do |row|
-            row.map do |piece|
-                piece.nil? ? "." : piece.name
-            end
+
+        @board.push([1, 2, 3, 4, 5, 6, 7, 8])
+
+        letters = ["a", "b", "c", "d", "e", "f", "g", "h", " "]
+
+        @board.map.with_index do |row, index|
+            row.unshift(letters[index])
         end
+
+        @board.map.with_index do |row|
+            row.map do |column|
+                if column.is_a?(String) || column.is_a?(Numeric)
+                    column.to_s
+                else
+                    column.nil? ? "." : column.name
+                end
+            end.join(" ")
+          end.join("\n")
     end
 
     def setup_pieces
@@ -42,9 +55,9 @@ class ChessBoard
         @board[7][3] = King.new([7, 3], 'black')
     
         @board[0][4] = Queen.new([0, 4], 'white')
-        @board[7][4] = Queen.new([7, 4], 'black') 
+        @board[7][4] = Queen.new([7, 4], 'black')    
       end
 end
 
 board = ChessBoard.new
-p board.display
+puts board.display
