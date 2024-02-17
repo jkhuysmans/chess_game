@@ -10,7 +10,6 @@ class ChessBoard
     end
 
     def display
-
         @board.push([1, 2, 3, 4, 5, 6, 7, 8])
 
         letters = ["h", "g", "f", "e", "d", "c", "b", "a", " "]
@@ -57,7 +56,9 @@ class ChessBoard
         @board[0][4] = Queen.new([0, 4], 'white')
         @board[7][4] = Queen.new([7, 4], 'black')    
       end
+
+      def raw_board
+        @board
+      end
 end
 
-board = ChessBoard.new
-puts board.display
