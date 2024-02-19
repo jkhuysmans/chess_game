@@ -11,6 +11,7 @@ class Pawn < ChessPieces
   def initialize(position, color)
     super(position, color) 
     @name = "P" 
+    @moves_number = 0
   end
 
   def name
@@ -18,12 +19,26 @@ class Pawn < ChessPieces
   end
 
   def moves
-    if moves_number < 1
-        @moves = [[2, 0], [1, 0]]
-      else
-        @moves = [[1, 0]]
-      end
+    x, y = @position
+
+    puts "position: #{x}, #{y}"
+    if @color == 'white'
+      base_moves = [[x + 1, y]] 
+      base_moves << [x + 2, y] if @moves_number.zero? 
+      capture_moves = [[x + 1, y - 1], [x + 1, y + 1]] 
+    else 
+      base_moves = [[x - 1, y]]
+      base_moves << [x - 2, y] if @moves_number.zero?
+      capture_moves = [[x - 1, y - 1], [x - 1, y + 1]]
     end
+
+    base_moves + capture_moves
+  end
+
+  def increment_moves
+    @moves_number += 1
+  end
+
 end
 
 class Knight < ChessPieces

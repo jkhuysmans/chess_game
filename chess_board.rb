@@ -10,15 +10,16 @@ class ChessBoard
     end
 
     def display
-        @board.push([1, 2, 3, 4, 5, 6, 7, 8])
+        display_board = Marshal.load(Marshal.dump(@board))
+        display_board.push([1, 2, 3, 4, 5, 6, 7, 8])
 
         letters = ["h", "g", "f", "e", "d", "c", "b", "a", " "]
 
-        @board.map.with_index do |row, index|
+        display_board.map.with_index do |row, index|
             row.unshift(letters[index])
         end
 
-        @board.map.with_index do |row|
+        display_board.map.with_index do |row|
             row.map do |column|
                 if column.is_a?(String) || column.is_a?(Numeric)
                     column.to_s
@@ -31,8 +32,8 @@ class ChessBoard
 
     def setup_pieces
         8.times do |i|
-          @board[1][i] = Pawn.new([1, i], 'black')
-          @board[6][i] = Pawn.new([6, i], 'white')
+          @board[6][i] = Pawn.new([6, i], 'black')
+          @board[1][i] = Pawn.new([1, i], 'white')
         end
        
         @board[0][0] = Rook.new([0, 0], 'white')
