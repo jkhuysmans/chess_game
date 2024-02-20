@@ -1,8 +1,8 @@
-class Knight < ChessPieces
+class King < ChessPieces
   
     def initialize(position, color)
       super(position, color) 
-      @name = "N" 
+      @name = "K" 
     end
   
     def name
@@ -20,7 +20,8 @@ class Knight < ChessPieces
   
 end
 
-# @moves = [
-#        [-1, -2], [-1, 2], [1, -2], [1, 2],
-#        [-2, -1], [-2, 1], [2, -1], [2, 1]
-#      ]
+
+
+
+
+# @moves = [[-1, -1], [-1, 1], [1, -1], [1, 1], [0, 1], [0, -1], [1, 0], [1, -1]]
