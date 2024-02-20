@@ -7,24 +7,6 @@ class ChessPieces
     end
 end
 
-class Knight < ChessPieces
-  def initialize(position, color)
-    super(position, color) 
-    @name = "N" 
-  end
-
-  def name
-    @name
-  end
-
-  def moves
-      @moves = [
-        [-1, -2], [-1, 2], [1, -2], [1, 2],
-        [-2, -1], [-2, 1], [2, -1], [2, 1]
-      ]
-  end
-end
-
 class King < ChessPieces
 
   def initialize(position, color)

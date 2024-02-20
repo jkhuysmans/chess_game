@@ -13,7 +13,7 @@ class Pawn < ChessPieces
     def moves
       x, y = @position
   
-      if @color == 'white'
+      if @color == 'black'
         base_moves = [[x + 1, y]] 
         base_moves << [x + 2, y] if @moves_number.zero? 
       else 

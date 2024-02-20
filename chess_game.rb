@@ -1,10 +1,11 @@
 require './chess_board.rb'
+require './chess_board_debug.rb'
 require './chess_pieces.rb'
 
 class ChessGame
 
     def initialize
-        @board = ChessBoard.new
+        @board = ChessBoardDebug.new
         @current_turn = 'white'
         @moves_number = 0
     end
@@ -50,10 +51,7 @@ class ChessGame
                 valid, _, target_position = selection_valid?(emplacement)
                 if valid_move?(piece, target_position)
                     piece_class = piece.class
-                    p "PIECE CLASS: #{piece_class}"
-                    p "TARGET POSITION: #{target_position}"
                     old_position = piece.position
-                    p "OLD PIECE POSITION: #{old_position}"
                     @board.board[old_position[0]][old_position[1]] = nil
                     @board.board[target_position[0]][target_position[1]] = piece 
                     piece.position = target_position
