@@ -6,6 +6,7 @@ class ChessGame
     def initialize
         @board = ChessBoard.new
         @current_turn = 'white'
+        @moves_number = 0
     end
 
     def display
@@ -16,8 +17,12 @@ class ChessGame
         p @board.raw_board
     end
 
-    def select_piece
+    def round
         display
+        select_piece
+    end
+
+    def select_piece
         puts "Enter the piece you want to select:"
         piece = nil
         
@@ -28,11 +33,9 @@ class ChessGame
                 if piece.nil?
                     puts "There is no piece at this emplacement. Please try again:"
                 else
-                    p piece 
-                    puts "Piece's position: #{piece.position}"
-                    puts "User's selection: #{position}"
-
+                    p piece
                     move_piece(piece)
+                    break
                 end
             end
         end
@@ -45,12 +48,17 @@ class ChessGame
             loop do
                 emplacement = gets.chomp
                 valid, _, target_position = selection_valid?(emplacement)
-                puts "Piece: #{piece}"
-                puts "Target position: #{target_position}"
                 if valid_move?(piece, target_position)
-                    @board.board[target_position[0] + 1][target_position[1]] = piece 
+                    piece_class = piece.class
+                    p "PIECE CLASS: #{piece_class}"
+                    p "TARGET POSITION: #{target_position}"
+                    old_position = piece.position
+                    p "OLD PIECE POSITION: #{old_position}"
+                    @board.board[old_position[0]][old_position[1]] = nil
+                    @board.board[target_position[0]][target_position[1]] = piece 
+                    piece.position = target_position
                     puts "Move valid. Piece moved."
-                    display
+                    round
                     break
                 else
                     puts "Invalid move. Please try again."
@@ -59,23 +67,29 @@ class ChessGame
     end
 
     def valid_move?(piece, target_position)
+
         position = piece.position
         possible_moves = piece.moves
   
-        possible_moves.include?(target_position)
+        return true if possible_moves.include?(target_position)
     end
 
     def selection_valid?(selected_piece)
-        
-        row = selected_piece[0].downcase.ord - 'a'.ord 
-        column = selected_piece[1].to_i - 1
 
-        if (0..8).include?(row) && (0..8).include?(column)
+        if selected_piece.nil? || selected_piece.length != 2
+            puts "Invalid input. Please enter a valid position (e.g., 'e2')."
+            return [false, nil, nil]
+        end
+        
+        column = selected_piece[0].downcase.ord - 'a'.ord
+        row = selected_piece[1].to_i - 1
+
+        if (0..7).include?(row) && (0..7).include?(column)
             piece = @board.board[row][column]
 
             return true, piece, [row, column]
         else
-            puts "wrong input"
+            puts "Wrong input"
         end 
 
     end
@@ -83,4 +97,4 @@ class ChessGame
 end
 
 game = ChessGame.new
-game.select_piece
+game.round

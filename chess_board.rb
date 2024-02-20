@@ -1,5 +1,9 @@
 require './chess_pieces.rb'
 
+Dir.glob(File.join(__dir__, 'pieces', '*.rb')).each do |file|
+    require_relative file
+  end
+
 
 class ChessBoard
     attr_accessor :board
@@ -11,12 +15,13 @@ class ChessBoard
 
     def display
         display_board = Marshal.load(Marshal.dump(@board))
-        display_board.push([1, 2, 3, 4, 5, 6, 7, 8])
+        display_board.push(["a", "b", "c", "d", "e", "f", "g", "h"])
 
-        letters = ["h", "g", "f", "e", "d", "c", "b", "a", " "]
+        numbers = [1, 2, 3, 4, 5, 6, 7, 8, " "]
+        letters = ["a", "b", "c", "d", "e", "f", "g", "h", " "]
 
         display_board.map.with_index do |row, index|
-            row.unshift(letters[index])
+            row.unshift(numbers[index])
         end
 
         display_board.map.with_index do |row|
