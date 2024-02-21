@@ -5,6 +5,7 @@ require './chess_pieces.rb'
 class ChessGame
 
     def initialize
+        #Debug for testing pieces' properties
         @board = ChessBoardDebug.new
         @current_turn = 'white'
         @moves_number = 0
@@ -32,9 +33,9 @@ class ChessGame
             valid, piece, position = selection_valid?(selected_piece)
             if valid
                 if piece.nil?
+                    
                     puts "There is no piece at this emplacement. Please try again:"
                 else
-                    p piece
                     move_piece(piece)
                     break
                 end
@@ -45,6 +46,13 @@ class ChessGame
 
     def move_piece(piece)
         puts "Where do you want to put the piece?"
+            possible_moves = piece.moves
+
+            #Display possible moves
+            possible_moves.each do |move|
+                @board.board[move[0]][move[1]] = "O"
+            end
+            display
 
             loop do
                 emplacement = gets.chomp
@@ -93,6 +101,3 @@ class ChessGame
     end
 
 end
-
-game = ChessGame.new
-game.round

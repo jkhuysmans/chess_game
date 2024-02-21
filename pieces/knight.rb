@@ -1,6 +1,6 @@
 class Knight < ChessPieces
   
-    def initialize(position, color)
+    def initialize(position, color, board)
       super(position, color) 
       @name = "N" 
     end

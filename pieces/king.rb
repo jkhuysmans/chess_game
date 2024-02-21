@@ -1,6 +1,6 @@
 class King < ChessPieces
   
-    def initialize(position, color)
+    def initialize(position, color, board)
       super(position, color) 
       @name = "K" 
     end
@@ -12,16 +12,9 @@ class King < ChessPieces
     def moves
       x, y = @position
   
-        base_moves = [[x - 1, y - 2], [x - 1, y + 2], [x + 1, y - 2], [x + 1, x + 2],
-      [x - 2, y - 1], [x - 2, y + 1], [x + 2, y - 1], [x + 2, x + 1]] 
+        base_moves = [[x - 1, y - 1],[x - 1, y + 1],[x + 1, y - 1],[x + 1, y + 1],
+        [x + 0, y + 1], [x + 0, y - 1], [x + 1, y + 0], [x + 1, y - 1]]
       
       base_moves
     end
-  
 end
-
-
-
-
-
-# @moves = [[-1, -1], [-1, 1], [1, -1], [1, 1], [0, 1], [0, -1], [1, 0], [1, -1]]

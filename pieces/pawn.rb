@@ -1,6 +1,6 @@
 class Pawn < ChessPieces
   
-    def initialize(position, color)
+    def initialize(position, color, board)
       super(position, color) 
       @name = "P" 
       @moves_number = 0
