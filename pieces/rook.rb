@@ -13,6 +13,10 @@ class Rook < ChessPieces
     def name
       @name
     end
+
+    def point_value
+      @point_value
+    end
   
     def moves
       x, y = @position

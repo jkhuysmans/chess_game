@@ -2,11 +2,16 @@ class King < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = "K" 
+      @name = "K"
+      @point_value = 100 
     end
   
     def name
       @name
+    end
+
+    def point_value
+      @point_value
     end
   
     def moves
