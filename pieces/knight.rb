@@ -3,10 +3,15 @@ class Knight < ChessPieces
     def initialize(position, color, board)
       super(position, color) 
       @name = "N" 
+      @point_value = 3
     end
   
     def name
       @name
+    end
+
+    def point_value
+      @point_value
     end
   
     def moves
@@ -19,8 +24,3 @@ class Knight < ChessPieces
     end
   
 end
-
-# @moves = [
-#        [-1, -2], [-1, 2], [1, -2], [1, 2],
-#        [-2, -1], [-2, 1], [2, -1], [2, 1]
-#      ]

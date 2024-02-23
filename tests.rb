@@ -11,3 +11,9 @@ def position_to_indices(pos)
   end
   
   position_to_indices("a4")
+
+
+  possible_moves.each do |move|
+    @board.board[move[0]][move[1]] = "O"
+end
+display

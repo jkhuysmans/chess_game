@@ -7,8 +7,9 @@ class ChessGame
     def initialize
         #Debug for testing pieces' properties
         @board = ChessBoardDebug.new
-        @current_turn = 'white'
-        @moves_number = 0
+        @white = 0
+        @black = 0
+        @round = 0
     end
 
     def display
@@ -20,11 +21,21 @@ class ChessGame
     end
 
     def round
+        puts "White's points: #{@white}"
+        puts "Black's points: #{@black}"
         display
-        select_piece
+        @round += 1
+
+        if @round.even?
+            current_player_color = "white"
+        elsif @round.odd?
+            current_player_color = "black"
+        end
+
+        select_piece(current_player_color)
     end
 
-    def select_piece
+    def select_piece(current_player_color)
         puts "Enter the piece you want to select:"
         piece = nil
         
@@ -33,10 +44,11 @@ class ChessGame
             valid, piece, position = selection_valid?(selected_piece)
             if valid
                 if piece.nil?
-                    
                     puts "There is no piece at this emplacement. Please try again:"
+                elsif piece.color != current_player_color
+                    puts "You cannot pick one of the pieces of the other player."
                 else
-                    move_piece(piece)
+                    move_piece(piece, current_player_color)
                     break
                 end
             end
@@ -44,26 +56,29 @@ class ChessGame
         
     end
 
-    def move_piece(piece)
+    def move_piece(piece, current_player_color)
         puts "Where do you want to put the piece?"
             possible_moves = piece.moves
-
-            #Display possible moves
-            possible_moves.each do |move|
-                @board.board[move[0]][move[1]] = "O"
-            end
-            display
 
             loop do
                 emplacement = gets.chomp
                 valid, _, target_position = selection_valid?(emplacement)
+                
                 if valid_move?(piece, target_position)
-                    piece_class = piece.class
                     old_position = piece.position
                     @board.board[old_position[0]][old_position[1]] = nil
-                    @board.board[target_position[0]][target_position[1]] = piece 
+                    target = @board.board[target_position[0]][target_position[1]]
+
+                    unless target == nil
+                        capture_piece(piece, target, current_player_color)
+                        target = piece 
+                    else
+                        target = piece 
+                    end
+
                     piece.position = target_position
                     puts "Move valid. Piece moved."
+                    sleep(1)
                     round
                     break
                 else
@@ -78,6 +93,15 @@ class ChessGame
         possible_moves = piece.moves
   
         return true if possible_moves.include?(target_position)
+    end
+
+    def capture_piece(piece, target, current_player_color)
+        puts "Piece captured!"
+        if current_player_color == "white"
+            @white += target.point_value
+        else
+            @black += target.point_value
+        end
     end
 
     def selection_valid?(selected_piece)

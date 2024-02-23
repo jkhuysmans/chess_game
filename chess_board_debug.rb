@@ -38,7 +38,7 @@ class ChessBoardDebug
     def setup_pieces
         
           @board[6][6] = Knight.new([6, 6], 'white', self)
-          @board[2][2] = Queen.new([2, 2], 'black', self)
+          @board[2][2] = Bishop.new([2, 2], 'black', self)
           
       end
 

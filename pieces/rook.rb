@@ -6,7 +6,8 @@ class Rook < ChessPieces
     def initialize(position, color, board)
       super(position, color) 
       @name = "R"
-      @board = board 
+      @board = board
+      @point_value = 5
     end
   
     def name
@@ -21,12 +22,16 @@ class Rook < ChessPieces
         new_x = x - i
         new_y = y
       
-        break if new_x < 0 || new_y < 0 || new_x > 7 || new_y > 7
+        break unless new_x.between?(0, 7) && new_y.between?(0, 7)
       
         cell = @board.board[new_x][new_y] 
-        break unless cell.nil?
-      
-        base_moves << [new_x, new_y]
+
+        if cell
+          base_moves << [new_x, new_y] if cell.color != @color
+          break
+        else
+          base_moves << [new_x, new_y]
+        end
       end
       
   
@@ -34,36 +39,48 @@ class Rook < ChessPieces
         new_x = x + i
         new_y = y
       
-        break if new_x < 0 || new_y < 0 || new_x > 7 || new_y > 7
+        break unless new_x.between?(0, 7) && new_y.between?(0, 7)
       
         cell = @board.board[new_x][new_y] 
-        break unless cell.nil?
-      
-        base_moves << [new_x, new_y]
+
+        if cell
+          base_moves << [new_x, new_y] if cell.color != @color
+          break
+        else
+          base_moves << [new_x, new_y]
+        end
       end
   
       1.upto(7) do |i|
         new_x = x
         new_y = y + i
       
-        break if new_x < 0 || new_y < 0 || new_x > 7 || new_y > 7
+        break unless new_x.between?(0, 7) && new_y.between?(0, 7)
       
         cell = @board.board[new_x][new_y] 
-        break unless cell.nil?
-      
-        base_moves << [new_x, new_y]
+
+        if cell
+          base_moves << [new_x, new_y] if cell.color != @color
+          break
+        else
+          base_moves << [new_x, new_y]
+        end
       end
   
       1.upto(7) do |i|
         new_x = x
         new_y = y - i
       
-        break if new_x < 0 || new_y < 0 || new_x > 7 || new_y > 7
+        break unless new_x.between?(0, 7) && new_y.between?(0, 7)
       
         cell = @board.board[new_x][new_y] 
-        break unless cell.nil?
-      
-        base_moves << [new_x, new_y]
+
+        if cell
+          base_moves << [new_x, new_y] if cell.color != @color
+          break
+        else
+          base_moves << [new_x, new_y]
+        end
       end
 
       base_moves

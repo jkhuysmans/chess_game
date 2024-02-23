@@ -4,6 +4,7 @@ class Pawn < ChessPieces
       super(position, color) 
       @name = "P" 
       @moves_number = 0
+      @point_value = 1
     end
   
     def name
