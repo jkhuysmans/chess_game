@@ -8,7 +8,8 @@ Dir.glob(File.join(__dir__, 'pieces', '*.rb')).each do |file|
 class ChessBoardDebug
     attr_accessor :board
 
-    def initialize
+    def initialize(game)
+        @game = game
         @board = Array.new(8) { Array.new(8) }
         setup_pieces
     end
@@ -24,8 +25,14 @@ class ChessBoardDebug
             row.unshift(numbers[index])
         end
 
+        black_stats = @game.instance_variable_get(:@black)
+        white_stats = @game.instance_variable_get(:@white)
+        display_board[1].push "Black's points: #{black_stats[0]}}"
+        display_board[2].push "White's points: #{white_stats[0]}}"
+
         display_board.map.with_index do |row|
             row.map do |column|
+
                 if column.is_a?(String) || column.is_a?(Numeric)
                     column.to_s
                 else

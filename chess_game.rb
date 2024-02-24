@@ -7,9 +7,9 @@ class ChessGame
 
     def initialize
         #Debug for testing pieces' properties
-        @board = ChessBoardDebug.new
+        @board = ChessBoardDebug.new(self)
         @white = [0, []]
-        @black = [0, ["Pawn", "Knight"]]
+        @black = [3, ["Pawn", "Knight"]]
         @round = 0
     end
 

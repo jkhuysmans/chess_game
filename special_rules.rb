@@ -1,3 +1,5 @@
+    # Methods for the pawn's special rules
+
 def reset_en_passant_flags
     @board.board.each do |row|
       row.each do |piece|
