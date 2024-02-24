@@ -44,13 +44,8 @@ class ChessBoardDebug
 
     def setup_pieces
         
-          @board[6][6] = King.new([6, 6], 'white', self)
-          @board[6][2] = Pawn.new([6, 2], 'black', self)
-          
-          @board[4][1] = Pawn.new([4, 1], 'white', self)
-          @board[4][3] = Pawn.new([4, 3], 'white', self)
-          @board[5][1] = Pawn.new([5, 1], 'white', self)
-          @board[5][3] = Pawn.new([5, 3], 'white', self)
+          @board[5][5] = King.new([5, 5], 'black', self)
+          @board[6][6] = Pawn.new([6, 6], 'white', self)
           
       end
 

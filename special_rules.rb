@@ -36,3 +36,25 @@ def pawn_promotion(piece)
         @board.board[piece.position[0]][piece.position[1]] = Object.const_get(promotion_input).new([piece.position[0]][piece.position[1]], "#{piece.color}", self)
     end
 end
+
+  #In check method
+
+  def king_in_check?
+    pieces_on_board = []
+    king_piece = nil
+
+    @board.board.each do |row|
+      row.each do |piece|
+        pieces_on_board << piece if !piece.nil? && piece.class != King
+        king_piece = piece if piece.class == King
+      end
+    end
+
+    pieces_on_board.each do |piece|
+      if piece.moves.include?(king_piece.position) && piece.color != king_piece.color
+        puts "King is in check!"
+      end
+    end
+  
+  end
+

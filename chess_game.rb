@@ -25,6 +25,7 @@ class ChessGame
         puts "White's points: #{@white}"
         puts "Black's points: #{@black}"
         reset_en_passant_flags
+        king_in_check?
 
         display
         @round += 1
@@ -100,19 +101,6 @@ class ChessGame
         return false if piece.color == @board.board[target_position[0]][target_position[1]].color
     end
 
-    def capture_piece(piece, target, current_player_color)
-        puts "Piece captured!"
-        if current_player_color == "white"
-            @white[0] += target.point_value
-            @white[1] << target.name
-        else
-            @black[0] += target.point_value
-            @black[1] << target.name
-        end
-
-        end_game(piece) if target.name == "K"
-    end
-
     def selection_valid?(selected_piece)
 
         if selected_piece.nil? || selected_piece.length != 2
@@ -131,6 +119,19 @@ class ChessGame
             puts "Wrong input"
         end 
 
+    end
+
+    def capture_piece(piece, target, current_player_color)
+        puts "Piece captured!"
+        if current_player_color == "white"
+            @white[0] += target.point_value
+            @white[1] << target.name
+        else
+            @black[0] += target.point_value
+            @black[1] << target.name
+        end
+
+        end_game(piece) if target.name == "K"
     end
 
     def end_game(piece)
