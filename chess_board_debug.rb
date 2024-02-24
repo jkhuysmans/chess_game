@@ -27,8 +27,8 @@ class ChessBoardDebug
 
         black_stats = @game.instance_variable_get(:@black)
         white_stats = @game.instance_variable_get(:@white)
-        display_board[1].push "Black's points: #{black_stats[0]}}"
-        display_board[2].push "White's points: #{white_stats[0]}}"
+        display_board[1].push "   Black's points: #{black_stats[0]}"
+        display_board[2].push "   White's points: #{white_stats[0]}"
 
         display_board.map.with_index do |row|
             row.map do |column|

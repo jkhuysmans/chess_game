@@ -22,8 +22,8 @@ class ChessGame
     end
 
     def round
-        puts "   White's points: #{@white}"
-        puts "   Black's points: #{@black}"
+        puts "White's points: #{@white}"
+        puts "Black's points: #{@black}"
         reset_en_passant_flags
 
         display
