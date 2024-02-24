@@ -7,10 +7,9 @@ class ChessGame
     def initialize
         #Debug for testing pieces' properties
         @board = ChessBoardDebug.new
-        @white = 0
-        @black = 0
+        @white = [0, []]
+        @black = [0, []]
         @round = 0
-        @current_round = 0
     end
 
     def display
@@ -41,8 +40,11 @@ class ChessGame
     def reset_en_passant_flags
         @board.board.each do |row|
           row.each do |piece|
-            if piece.is_a?(Pawn) && (@current_round + 3) == @round
-              piece.en_passant = false
+            piece.en_passant_increment if piece.is_a?(Pawn) && piece.en_passant == true
+            puts "en passant round: #{piece.en_passant_round}" if piece.is_a?(Pawn)
+            if piece.is_a?(Pawn) && piece.en_passant_round == 3
+                puts "en passant set to false"
+                piece.en_passant = false
             end
           end
         end
@@ -70,7 +72,7 @@ class ChessGame
     end
 
     def move_piece(piece, current_player_color)
-        puts "Where do you want to put the piece?"
+        puts "You selected a #{piece.class}. Where do you want to put the piece?"
             possible_moves = piece.moves
 
             loop do
@@ -78,7 +80,7 @@ class ChessGame
                 valid, _, target_position = selection_valid?(emplacement)
                 old_position = piece.position
 
-                check_en_passant(piece, old_position, target_position) if piece.name == "P"
+                check_en_passant(piece, old_position, target_position) if piece.name == "\u2659" || piece.name == "\u265F"
                 
                 if valid_move?(piece, target_position)
                     @board.board[old_position[0]][old_position[1]] = nil
@@ -89,7 +91,7 @@ class ChessGame
                     piece.position = target_position
 
                     puts "Move valid. Piece moved."
-                    piece.moves_number if piece.name == "P"
+                    piece.moves_number if piece.name == "\u2659" || piece.name == "\u265F"
                     sleep(1)
                     round
                     break
@@ -101,7 +103,6 @@ class ChessGame
 
     def check_en_passant(piece, old_position, target_position)
         if piece.is_a?(Pawn) && (old_position[0] - target_position[0]).abs == 2
-            @current_round = @round
             piece.en_passant = true
         end
     end
@@ -118,9 +119,11 @@ class ChessGame
     def capture_piece(piece, target, current_player_color)
         puts "Piece captured!"
         if current_player_color == "white"
-            @white += target.point_value
+            @white[0] += target.point_value
+            @white[1] << target.name
         else
-            @black += target.point_value
+            @black[0] += target.point_value
+            @black[1] << target.name
         end
 
         end_game(piece) if target.name == "K"

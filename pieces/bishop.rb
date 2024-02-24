@@ -5,7 +5,7 @@ class Bishop < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = "B"
+      @name = color == "white" ? "\u2657" : "\u265D"
       @board = board 
       @point_value = 3
     end

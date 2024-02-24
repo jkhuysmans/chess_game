@@ -5,7 +5,7 @@ class Rook < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = "R"
+      @name = color == "white" ? "\u2656" : "\u265C"
       @board = board
       @point_value = 5
     end

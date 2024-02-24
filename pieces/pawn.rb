@@ -3,11 +3,20 @@ class Pawn < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = "P" 
+      @name = color == "white" ? "\u2659" : "\u265F"
       @moves_number = 0
       @board = board 
       @point_value = 1
       @en_passant = false
+      @en_passant_round = 0
+    end
+
+    def en_passant_round
+      @en_passant_round
+    end
+
+    def en_passant_increment
+      @en_passant_round += 1
     end
   
     def name
@@ -47,21 +56,17 @@ class Pawn < ChessPieces
       
       end
 
-      puts "HEY" if @en_passant == true
       if @en_passant == true
         if @board.board[x][y + 1] && @board.board[x][y + 1].name == "P"
-          p @board.board[x][y + 1].position
           base_moves << [x, y + 1]
         end
         if @board.board[x][y - 1] && @board.board[x][y - 1].name == "P"
-          p @board.board[x][y - 1].position
           base_moves << [x, y - 1]
         end
 
         
       end
 
-      p base_moves
       base_moves
     end
     

@@ -2,7 +2,7 @@ class King < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = "K"
+      @name = color == "white" ? "\u2654" : "\u265A"
       @point_value = 100 
     end
   
