@@ -1,9 +1,11 @@
 class Pawn < ChessPieces
-  attr_accessor :en_passant
+  attr_accessor :en_passant, :moves_number
+  attr_reader :name, :id, :point_value, :en_passant_round, :board
   
     def initialize(position, color, board)
       super(position, color) 
       @name = color == "white" ? "\u2659" : "\u265F"
+      @id = "P"
       @moves_number = 0
       @board = board 
       @point_value = 1
@@ -11,20 +13,8 @@ class Pawn < ChessPieces
       @en_passant_round = 0
     end
 
-    def en_passant_round
-      @en_passant_round
-    end
-
     def en_passant_increment
       @en_passant_round += 1
-    end
-  
-    def name
-      @name
-    end
-
-    def point_value
-      @point_value
     end
 
     def moves_number
@@ -41,7 +31,9 @@ class Pawn < ChessPieces
         base_moves << forward_one
         if @moves_number.zero?
           forward_two = [x + 2 * direction, y]
-          base_moves << forward_two if @board.board[forward_two[0]][forward_two[1]].nil?
+          if forward_two[0].between?(0, 7) && forward_two[1].between?(0, 7)
+            base_moves << forward_two if @board.board[forward_two[0]][forward_two[1]].nil?
+          end
         end
       end
     

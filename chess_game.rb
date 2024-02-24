@@ -1,6 +1,7 @@
 require './chess_board.rb'
 require './chess_board_debug.rb'
 require './chess_pieces.rb'
+require './special_rules.rb'
 
 class ChessGame
 
@@ -8,7 +9,7 @@ class ChessGame
         #Debug for testing pieces' properties
         @board = ChessBoardDebug.new
         @white = [0, []]
-        @black = [0, []]
+        @black = [0, ["Pawn", "Knight"]]
         @round = 0
     end
 
@@ -35,20 +36,7 @@ class ChessGame
         end
 
         select_piece(current_player_color)
-    end
-
-    def reset_en_passant_flags
-        @board.board.each do |row|
-          row.each do |piece|
-            piece.en_passant_increment if piece.is_a?(Pawn) && piece.en_passant == true
-            puts "en passant round: #{piece.en_passant_round}" if piece.is_a?(Pawn)
-            if piece.is_a?(Pawn) && piece.en_passant_round == 3
-                puts "en passant set to false"
-                piece.en_passant = false
-            end
-          end
-        end
-      end      
+    end 
 
     def select_piece(current_player_color)
         puts "Enter the piece you want to select:"
@@ -80,7 +68,7 @@ class ChessGame
                 valid, _, target_position = selection_valid?(emplacement)
                 old_position = piece.position
 
-                check_en_passant(piece, old_position, target_position) if piece.name == "\u2659" || piece.name == "\u265F"
+                check_en_passant(piece, old_position, target_position) if piece.id == "P"
                 
                 if valid_move?(piece, target_position)
                     @board.board[old_position[0]][old_position[1]] = nil
@@ -91,7 +79,9 @@ class ChessGame
                     piece.position = target_position
 
                     puts "Move valid. Piece moved."
-                    piece.moves_number if piece.name == "\u2659" || piece.name == "\u265F"
+                    piece.moves_number if piece.id == "P"
+
+                    pawn_promotion(piece)
                     sleep(1)
                     round
                     break
@@ -99,12 +89,6 @@ class ChessGame
                     puts "Invalid move. Please try again."
                 end
             end
-    end
-
-    def check_en_passant(piece, old_position, target_position)
-        if piece.is_a?(Pawn) && (old_position[0] - target_position[0]).abs == 2
-            piece.en_passant = true
-        end
     end
 
     def valid_move?(piece, target_position)

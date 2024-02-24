@@ -2,20 +2,14 @@ require './chess_board_debug.rb'
 require './chess_board.rb'
 
 class Bishop < ChessPieces
+  attr_reader :name, :id, :point_value
   
     def initialize(position, color, board)
       super(position, color) 
       @name = color == "white" ? "\u2657" : "\u265D"
+      @id = "B"
       @board = board 
       @point_value = 3
-    end
-  
-    def name
-      @name
-    end
-
-    def point_value
-      @point_value
     end
   
     def moves

@@ -1,17 +1,11 @@
 class King < ChessPieces
+  attr_reader :name, :id, :point_value
   
     def initialize(position, color, board)
       super(position, color) 
       @name = color == "white" ? "\u2654" : "\u265A"
+      @id = "K"
       @point_value = 100 
-    end
-  
-    def name
-      @name
-    end
-
-    def point_value
-      @point_value
     end
   
     def moves

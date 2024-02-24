@@ -2,20 +2,14 @@ require './chess_board_debug.rb'
 require './chess_board.rb'
 
 class Rook < ChessPieces
+  attr_reader :name, :id, :point_value
   
     def initialize(position, color, board)
       super(position, color) 
       @name = color == "white" ? "\u2656" : "\u265C"
       @board = board
+      @id = "R"
       @point_value = 5
-    end
-  
-    def name
-      @name
-    end
-
-    def point_value
-      @point_value
     end
   
     def moves
