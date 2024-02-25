@@ -37,7 +37,7 @@ def pawn_promotion(piece)
     end
 end
 
-  #In check method
+  #In check & checkmate
 
   def king_in_check?
     pieces_on_board = []
@@ -53,8 +53,38 @@ end
     pieces_on_board.each do |piece|
       if piece.moves.include?(king_piece.position) && piece.color != king_piece.color
         puts "King is in check!"
+        checkmate?(king_piece, pieces_on_board)
+        break
       end
     end
   
   end
 
+  def checkmate?(king_piece, pieces_on_board)
+
+    can_move_king?(king_piece, pieces_on_board)
+    
+  end
+
+  def can_move_king?(king_piece, pieces_on_board)
+
+    king_piece.moves.each do |move|
+      move_is_safe = true
+  
+      pieces_on_board.each do |piece|
+        if piece.color != king_piece.color && piece.moves.include?(move)
+          move_is_safe = false
+          break
+        end
+      end
+  
+      if move_is_safe
+        puts "true"
+        # @board.board[move[0]][move[1]] = "O"
+        # return true
+      end
+    end
+  
+    puts "false"
+    return false
+  end

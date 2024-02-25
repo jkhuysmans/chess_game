@@ -4,7 +4,7 @@ class Pawn < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = color == "white" ? "\u2659" : "\u265F"
+      @name = color != "white" ? "\u2659" : "\u265F"
       @id = "P"
       @moves_number = 0
       @board = board 
@@ -41,22 +41,17 @@ class Pawn < ChessPieces
         capture_pos = [x + direction, y + dy]
         if capture_pos.all? { |coord| coord.between?(0, 7) }
           target = @board.board[capture_pos[0]][capture_pos[1]]
-          if target && target.color != self.color
-            base_moves << capture_pos
-          end
-      end
-      
+          base_moves << capture_pos if target.nil? || target.color != self.color
+        end
       end
 
-      if @en_passant == true
-        if @board.board[x][y + 1] && @board.board[x][y + 1].name == "P"
-          base_moves << [x, y + 1]
+      if @en_passant
+        if @board.board[x][y + 1]&.id == "P" && @board.board[x][y + 1].color != self.color
+          base_moves << [x + direction, y + 1]
         end
-        if @board.board[x][y - 1] && @board.board[x][y - 1].name == "P"
-          base_moves << [x, y - 1]
+        if @board.board[x][y - 1]&.id == "P" && @board.board[x][y - 1].color != self.color
+          base_moves << [x + direction, y - 1]
         end
-
-        
       end
 
       base_moves

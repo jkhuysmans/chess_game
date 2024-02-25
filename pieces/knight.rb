@@ -3,7 +3,7 @@ class Knight < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = color == "white" ? "\u2658" : "\u265E"
+      @name = color != "white" ? "\u2658" : "\u265E"
       @id = "N"
       @point_value = 3
     end

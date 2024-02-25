@@ -6,7 +6,7 @@ class Queen < ChessPieces
   
     def initialize(position, color, board)
       super(position, color) 
-      @name = color == "white" ? "\u2655" : "\u265B"
+      @name = color != "white" ? "\u2655" : "\u265B"
       @board = board 
       @id = "Q"
       @point_value = 9
