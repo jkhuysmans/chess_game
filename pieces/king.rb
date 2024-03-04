@@ -13,6 +13,10 @@ class King < ChessPieces
   
       base_moves = [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1], [x - 1, y], [x + 1, y],
       [x - 1, y + 1], [x, y + 1], [x + 1, y + 1]]
+
+      base_moves = base_moves.select do |new_x, new_y|
+        new_x.between?(0, 7) && new_y.between?(0, 7)
+      end
       
       base_moves
     end

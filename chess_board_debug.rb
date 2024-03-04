@@ -47,17 +47,16 @@ class ChessBoardDebug
     end
 
     def setup_pieces
+
+        #first number: column, second number: row
         
-          @board[7 - 5][4] = King.new([7 - 5, 4], 'black', self)   # Black King at e5 (standard chess notation)
-          @board[7 - 3][7] = Queen.new([7 - 4, 7], 'white', self) # White Queen at h5
-          @board[7 - 7][4] = Rook.new([7 - 7, 4], 'white', self)  # White Rook at e8
-          @board[7 - 2][2] = Bishop.new([7 - 1, 1], 'white', self) # White Bishop at b2
-          @board[7 - 4][2] = Knight.new([7 - 4, 2], 'white', self) # White Knight at c4
-          @board[7 - 4][6] = Knight.new([7 - 4, 6], 'white', self) # White Knight at g4
-          @board[7 - 5][3] = Pawn.new([7 - 5, 3], 'white', self)   # White Pawn at d6
-          @board[7 - 5][5] = Pawn.new([7 - 5, 5], 'white', self)   # White Pawn at f6
-          
-         
+          #@board[7 - 7][7] = King.new([7 - 7, 7], 'white', self)
+          #@board[7 - 6][5] = King.new([7 - 6, 5], 'black', self)
+          #@board[7 - 6][7] = Rook.new([7 - 6, 7], 'black', self)
+
+          @board[7 - 4][4] = Pawn.new([7 - 4, 4], 'white', self)
+
+
       end
 
       def raw_board

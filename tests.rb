@@ -17,3 +17,7 @@ def position_to_indices(pos)
     @board.board[move[0]][move[1]] = "O"
 end
 display
+
+possible_moves.each do |move|
+  @board.board[move[0]][move[1]] = "0"
+end

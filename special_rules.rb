@@ -1,22 +1,6 @@
     # Methods for the pawn's special rules
 
-def reset_en_passant_flags
-    @board.board.each do |row|
-      row.each do |piece|
-        piece.en_passant_increment if piece.is_a?(Pawn) && piece.en_passant == true
-        puts "en passant round: #{piece.en_passant_round}" if piece.is_a?(Pawn) && piece.en_passant == true
-        if piece.is_a?(Pawn) && piece.en_passant_round == 3
-            piece.en_passant = false
-        end
-      end
-    end
-  end     
 
-def check_en_passant(piece, old_position, target_position)
-    if piece.is_a?(Pawn) && (old_position[0] - target_position[0]).abs == 2
-        piece.en_passant = true
-    end
-end
 
 def pawn_promotion(piece)
     if piece.position[0] == 7
@@ -39,52 +23,61 @@ end
 
   #In check & checkmate
 
-  def king_in_check?
-    pieces_on_board = []
-    king_piece = nil
-
-    @board.board.each do |row|
-      row.each do |piece|
-        pieces_on_board << piece if !piece.nil? && piece.class != King
-        king_piece = piece if piece.class == King
-      end
+def king_in_check?
+  all_pieces = []
+  king_pieces = []
+  
+  @board.board.each do |row|
+    row.each do |piece|
+      next if piece.nil?
+      all_pieces << piece
+      king_pieces << piece if piece.class == King
     end
-
-    pieces_on_board.each do |piece|
-      if piece.moves.include?(king_piece.position) && piece.color != king_piece.color
+  end
+  
+  king_pieces.each do |king|
+    # Temporarily remove the current king from all pieces to get potential attackers
+    potential_attackers = all_pieces.reject { |piece| piece == king }
+      
+    potential_attackers.each do |attacker|
+      if attacker.moves.include?(king.position) && attacker.color != king.color
         puts "King is in check!"
-        checkmate?(king_piece, pieces_on_board)
+        checkmate?(king, potential_attackers)
         break
       end
     end
-  
   end
+end
+  
+def checkmate?(king_piece, pieces_on_board)
 
-  def checkmate?(king_piece, pieces_on_board)
-
-    can_move_king?(king_piece, pieces_on_board)
+  can_king_move?(king_piece, pieces_on_board)
     
-  end
+end
 
-  def can_move_king?(king_piece, pieces_on_board)
+def can_king_move?(king_piece, pieces_on_board)
+  safe_move_found = false
 
-    king_piece.moves.each do |move|
-      move_is_safe = true
-  
-      pieces_on_board.each do |piece|
-        if piece.color != king_piece.color && piece.moves.include?(move)
-          move_is_safe = false
-          break
-        end
-      end
-  
-      if move_is_safe
-        puts "true"
-        # @board.board[move[0]][move[1]] = "O"
-        # return true
+  other_pieces_moves = []
+  pieces_on_board.each do |piece|
+    if piece.color != king_piece.color
+      piece.moves.each do |move|
+        other_pieces_moves << move
       end
     end
-  
-    puts "false"
-    return false
   end
+
+  other_pieces_moves.each do |move|
+       # @board.board[move[0]][move[1]] = Pawn.new([move[0], move[1]], "white", self)
+  end
+
+  king_piece.moves.each do |move|
+    if !other_pieces_moves.include?(move)
+      puts "can move: #{move}"
+      safe_move_found = true
+    end
+  end
+
+  p safe_move_found
+  return safe_move_found
+end
