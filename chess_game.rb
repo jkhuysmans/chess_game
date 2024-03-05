@@ -73,11 +73,11 @@ class ChessGame
         end
     end
 
-    def valid_move?(emplacement, piece, target_position)
+    def valid_move?(emplacement, piece, target_position, possible_moves)
         valid_check = selection_valid?(emplacement)
         return valid_check if valid_check.is_a?(String)
 
-        unless piece.moves.include?(target_position)
+        unless possible_moves.include?(target_position)
           return "Target position is not within the piece's possible moves."
         end
     
@@ -92,6 +92,10 @@ class ChessGame
     def input_move_piece(piece, current_player_color)
         puts "You selected a #{piece.class}. Where do you want to put the piece? Input 'cancel' to cancel your selection."
             possible_moves = piece.moves
+            p possible_moves
+            special_moves = check_for_special_moves(piece)
+            possible_moves += special_moves unless special_moves.empty?
+            p possible_moves
 
             loop do
                 emplacement = gets.chomp.downcase
@@ -107,7 +111,7 @@ class ChessGame
                 if selection_valid?(emplacement) 
                     target_position = convert_selection(emplacement)
 
-                    result = valid_move?(emplacement, piece, target_position)
+                    result = valid_move?(emplacement, piece, target_position, possible_moves)
 
                     if result == true
                         move_piece(old_position, piece, current_player_color, target_position)
@@ -125,26 +129,47 @@ class ChessGame
 
     def move_piece(old_position, piece, current_player_color, target_position)
         @board.board[old_position[0]][old_position[1]] = nil
-        target = @board.board[target_position[0]][target_position[1]]
-        check_if_capture_piece(piece, target, current_player_color)
+        check_if_capture_piece(piece, old_position, target_position, current_player_color)
                         
         @board.board[target_position[0]][target_position[1]] = piece 
         piece.position = target_position
 
         puts "Move valid. Piece moved."
-        piece.moves_number if piece.id == "P"
-
-        pawn_promotion(piece) if piece.id == "P"
+        check_pawn(piece, old_position, target_position) if piece.id == "P"
     end
 
-    def check_if_capture_piece(piece, target, current_player_color)
+    def check_pawn(piece, old_position, target_position)
+        piece.increment_moves
+        piece.set_en_passant if piece.moves_number == 1 && (old_position[0] - target_position[0]).abs == 2
+        
+        pawn_promotion(piece)
+    end
+
+    def check_if_capture_piece(piece, old_position, target_position, current_player_color)
+        target = @board.board[target_position[0]][target_position[1]]
+
         if target != nil && target.color != current_player_color
             capture_piece(piece, target, current_player_color)
         end
+
+        left_cell = @board.board[old_position[0]][old_position[1] - 1]
+        right_cell = @board.board[old_position[0]][old_position[1] + 1]
+
+        if left_cell.class == Pawn && left_cell.color != piece.color # need additional rule here
+            capture_piece(piece, left_cell, current_player_color) if left_cell.en_passant == true
+            @board.board[old_position[0]][old_position[1] - 1] = nil
+        end
+
+        if right_cell.class == Pawn && right_cell.color != piece.color
+            capture_piece(piece, right_cell, current_player_color) if right_cell.en_passant == true
+            @board.board[old_position[0]][old_position[1] + 1] = nil
+        end
+
     end
 
     def capture_piece(piece, target, current_player_color)
         puts "Piece captured!"
+
         if current_player_color == "white"
             @white[0] += target.point_value
             @white[1] << target.name

@@ -1,6 +1,43 @@
     # Methods for the pawn's special rules
 
+def check_for_special_moves(piece)
+  special_moves = []
+  piece_position = piece.position
 
+  increment = piece.color == "white" ? -1 : 1
+  diagonal_left_cell = @board.board[piece_position[0] + increment][piece_position[1] - 1]
+  diagonal_right_cell = @board.board[piece_position[0] + increment][piece_position[1] + 1]
+  en_passant_moves = en_passant_moves(piece, [piece_position[0] + increment, piece_position[1] - 1], [piece_position[0] + increment, piece_position[1] + 1])
+
+  if !diagonal_left_cell.nil? && diagonal_left_cell.color != piece.color
+    special_moves << diagonal_left_cell.position
+  end
+
+  if !diagonal_right_cell.nil? && diagonal_right_cell.color != piece.color
+    special_moves << diagonal_right_cell.position
+  end
+ 
+  special_moves += en_passant_moves unless en_passant_moves.empty?
+  special_moves
+end
+
+def en_passant_moves(piece, diagonal_left, diagonal_right)
+  en_passant_moves = []
+  piece_position = piece.position
+  left_cell = @board.board[piece_position[0]][piece_position[1] - 1]
+  right_cell = @board.board[piece_position[0]][piece_position[1] + 1]
+  right_cell.set_en_passant
+  
+  if left_cell.class == Pawn && left_cell.color != piece.color
+    en_passant_moves << diagonal_left if left_cell.en_passant == true
+  end
+
+  if right_cell.class == Pawn && right_cell.color != piece.color
+    en_passant_moves << diagonal_right if right_cell.en_passant == true
+  end
+
+  en_passant_moves
+end
 
 def pawn_promotion(piece)
     if piece.position[0] == 7

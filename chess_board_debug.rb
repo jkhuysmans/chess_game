@@ -55,7 +55,9 @@ class ChessBoardDebug
           #@board[7 - 6][7] = Rook.new([7 - 6, 7], 'black', self)
 
           @board[7 - 4][4] = Pawn.new([7 - 4, 4], 'white', self)
-
+          # @board[7 - 4][3] = Pawn.new([7 - 5, 3], 'white', self)
+          @board[7 - 4][5] = Pawn.new([7 - 5, 5], 'black', self)
+          @board[7 - 5][3] = Pawn.new([7 - 5, 3], 'black', self)
 
       end
 

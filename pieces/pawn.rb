@@ -1,6 +1,6 @@
 class Pawn < ChessPieces
   attr_accessor :en_passant, :moves_number
-  attr_reader :name, :id, :point_value, :en_passant_round, :board
+  attr_reader :name, :id, :point_value, :board
   
     def initialize(position, color, board)
       super(position, color) 
@@ -9,6 +9,19 @@ class Pawn < ChessPieces
       @moves_number = 0
       @board = board 
       @point_value = 1
+      @en_passant = false
+    end
+
+    def increment_moves
+      @moves_number += 1
+    end
+
+    def set_en_passant
+      @en_passant = true
+    end
+
+    def en_passant
+      @en_passant
     end
   
     def moves
@@ -18,7 +31,6 @@ class Pawn < ChessPieces
 
       base_moves << [x + direction, y]
       base_moves << [x + direction * 2, y] if @moves_number <= 1
-      
       
       base_moves
     end
