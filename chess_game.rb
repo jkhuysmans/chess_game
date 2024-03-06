@@ -63,7 +63,6 @@ class ChessGame
             
             if result == true
                 piece_position = convert_selection(selected_piece)
-                p piece_position
                 piece = @board.board[piece_position[0]][piece_position[1]]
                 input_move_piece(piece, current_player_color)
                 break
@@ -92,10 +91,8 @@ class ChessGame
     def input_move_piece(piece, current_player_color)
         puts "You selected a #{piece.class}. Where do you want to put the piece? Input 'cancel' to cancel your selection."
             possible_moves = piece.moves
-            p possible_moves
             special_moves = check_for_special_moves(piece)
             possible_moves += special_moves unless special_moves.empty?
-            p possible_moves
 
             loop do
                 emplacement = gets.chomp.downcase
@@ -152,17 +149,12 @@ class ChessGame
             capture_piece(piece, target, current_player_color)
         end
 
-        left_cell = @board.board[old_position[0]][old_position[1] - 1]
-        right_cell = @board.board[old_position[0]][old_position[1] + 1]
+        increment = piece.color == "white" ? -1 : 1
+        under_cell = @board.board[target_position[0] - increment][target_position[1]]
 
-        if left_cell.class == Pawn && left_cell.color != piece.color # need additional rule here
-            capture_piece(piece, left_cell, current_player_color) if left_cell.en_passant == true
-            @board.board[old_position[0]][old_position[1] - 1] = nil
-        end
-
-        if right_cell.class == Pawn && right_cell.color != piece.color
-            capture_piece(piece, right_cell, current_player_color) if right_cell.en_passant == true
-            @board.board[old_position[0]][old_position[1] + 1] = nil
+        if under_cell.class == Pawn && under_cell.color != piece.color 
+            capture_piece(piece, under_cell, current_player_color) if under_cell.en_passant == true
+            @board.board[target_position[0] - increment][target_position[1]] = nil
         end
 
     end

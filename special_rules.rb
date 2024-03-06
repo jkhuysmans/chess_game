@@ -26,7 +26,6 @@ def en_passant_moves(piece, diagonal_left, diagonal_right)
   piece_position = piece.position
   left_cell = @board.board[piece_position[0]][piece_position[1] - 1]
   right_cell = @board.board[piece_position[0]][piece_position[1] + 1]
-  right_cell.set_en_passant
   
   if left_cell.class == Pawn && left_cell.color != piece.color
     en_passant_moves << diagonal_left if left_cell.en_passant == true
