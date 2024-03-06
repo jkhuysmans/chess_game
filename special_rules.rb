@@ -59,7 +59,18 @@ end
 
   #In check & checkmate
 
-def king_in_check?
+def king_in_check?(potential_attackers, king)
+  potential_attackers.each do |attacker|
+    if attacker.moves.include?(king.position) && attacker.color != king.color
+      puts "#{king.color.capitalize} King is in check!"
+      king.set_in_check
+      break
+    end
+  end
+end
+  
+def checkmate?
+  puts "checking checkmate"
   all_pieces = []
   king_pieces = []
   
@@ -70,36 +81,25 @@ def king_in_check?
       king_pieces << piece if piece.class == King
     end
   end
-  
+
   king_pieces.each do |king|
-    # Temporarily remove the current king from all pieces to get potential attackers
-    potential_attackers = all_pieces.reject { |piece| piece == king }
-      
-    potential_attackers.each do |attacker|
-      if attacker.moves.include?(king.position) && attacker.color != king.color
-        puts "King is in check!"
-        checkmate?(king, potential_attackers)
-        break
-      end
-    end
+    potential_attackers = all_pieces.reject { |piece| piece == king if king.color != piece.color }
+    king_in_check?(potential_attackers, king)
+    can_king_move?(potential_attackers, king)
   end
-end
-  
-def checkmate?(king_piece, pieces_on_board)
 
-  can_king_move?(king_piece, pieces_on_board)
-    
 end
 
-def can_king_move?(king_piece, pieces_on_board)
+def can_king_move?(potential_attackers, king)
   safe_move_found = false
 
   other_pieces_moves = []
-  pieces_on_board.each do |piece|
-    if piece.color != king_piece.color
+  potential_attackers.each do |piece|
+    if piece.color != king.color
       piece.moves.each do |move|
         other_pieces_moves << move
       end
+      other_pieces_moves << piece.position
     end
   end
 
@@ -107,7 +107,7 @@ def can_king_move?(king_piece, pieces_on_board)
        # @board.board[move[0]][move[1]] = Pawn.new([move[0], move[1]], "white", self)
   end
 
-  king_piece.moves.each do |move|
+  king.moves.each do |move|
     if !other_pieces_moves.include?(move)
       puts "can move: #{move}"
       safe_move_found = true

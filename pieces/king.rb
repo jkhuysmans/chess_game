@@ -6,6 +6,15 @@ class King < ChessPieces
       @name = color != "white" ? "\u2654" : "\u265A"
       @id = "K"
       @point_value = 100 
+      @in_check = false
+    end
+
+    def in_check
+      @in_check
+    end
+
+    def set_in_check
+      @in_check = true
     end
   
     def moves

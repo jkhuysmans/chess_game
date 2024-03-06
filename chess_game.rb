@@ -28,6 +28,8 @@ class ChessGame
         puts "This is #{current_player_color}'s turn"
         display
 
+        checkmate?
+
         select_piece(current_player_color)
     end 
 
@@ -81,6 +83,7 @@ class ChessGame
         end
     
         target_piece = @board.board[target_position[0]][target_position[1]]
+        
         if target_piece && piece.color == target_piece.color
           return "You cannot capture a piece of the same color."
         end
@@ -93,6 +96,12 @@ class ChessGame
             possible_moves = piece.moves
             special_moves = check_for_special_moves(piece)
             possible_moves += special_moves unless special_moves.empty?
+
+            possible_moves.each do |move|
+                # @board.board[move[0]][move[1]] = "0"
+              end
+
+              display
 
             loop do
                 emplacement = gets.chomp.downcase
@@ -133,6 +142,7 @@ class ChessGame
 
         puts "Move valid. Piece moved."
         check_pawn(piece, old_position, target_position) if piece.id == "P"
+        # checkmate?
     end
 
     def check_pawn(piece, old_position, target_position)
