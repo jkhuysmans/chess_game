@@ -2,31 +2,39 @@ require './chess_board.rb'
 require './chess_board_debug.rb'
 require './chess_pieces.rb'
 require './special_rules.rb'
+require './save_game.rb'
 
 class ChessGame
 
     def initialize
         @board = ChessBoardDebug.new(self)
         @white = [0, []]
-        @black = [3, ["Pawn", "Knight"]]
+        @black = [0, []]
         @round = 1
+        @archived_boards = []
+        @draw_possible = true
     end
 
     def display
         puts "#{@board.display}", " "
     end
 
-    def round
-        @round += 1
+    def start
+        round
+    end
 
-        if @round.even?
+    def round
+
+        if @round.odd?
             current_player_color = "white"
-        elsif @round.odd?
+        elsif @round.even?
             current_player_color = "black"
         end
 
-        puts "This is #{current_player_color}'s turn"
+        puts "Round #{@round}. This is #{current_player_color}'s turn:"
         display
+
+        check_draw?(current_player_color)
 
         checkmate?
 
@@ -56,12 +64,16 @@ class ChessGame
     end
       
     def select_piece(current_player_color)
-        puts "Enter the piece you want to select:"
+        puts "#{current_player_color.capitalize} player, please enter your selection:"
         
         loop do
             selected_piece = gets.chomp
 
-            result = selection_valid?(selected_piece)
+            if selected_piece.downcase == "draw" && @draw_possible
+                break if draw_input(current_player_color)
+            else
+                result = selection_valid?(selected_piece)
+            end
             
             if result == true
                 piece_position = convert_selection(selected_piece)
@@ -96,12 +108,6 @@ class ChessGame
             possible_moves = piece.moves
             special_moves = check_for_special_moves(piece)
             possible_moves += special_moves unless special_moves.empty?
-
-            possible_moves.each do |move|
-                # @board.board[move[0]][move[1]] = "0"
-              end
-
-              display
 
             loop do
                 emplacement = gets.chomp.downcase
@@ -142,7 +148,11 @@ class ChessGame
 
         puts "Move valid. Piece moved."
         check_pawn(piece, old_position, target_position) if piece.id == "P"
-        # checkmate?
+        add_round
+    end
+
+    def add_round
+        @round += 1
     end
 
     def check_pawn(piece, old_position, target_position)
@@ -183,8 +193,16 @@ class ChessGame
         end_game(piece) if target.name == "K"
     end
 
-    def end_game(piece)
-        p piece.color
+    def end_checkmate(piece)
+        puts "Checkmate! #{piece.color.capitalize} wins!"
+    end
+
+    def end_stalemate(piece)
+        puts "Stalemate!"
+    end
+
+    def end_by_draw
+        puts "Game ended in a draw!"
     end
 
 end

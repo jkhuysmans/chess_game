@@ -1,4 +1,6 @@
-    # Methods for the pawn's special rules
+require 'digest'
+
+# Methods for the pawn's special rules
 
 def check_for_special_moves(piece)
   special_moves = []
@@ -70,7 +72,6 @@ def king_in_check?(potential_attackers, king)
 end
   
 def checkmate?
-  puts "checking checkmate"
   all_pieces = []
   king_pieces = []
   
@@ -85,7 +86,9 @@ def checkmate?
   king_pieces.each do |king|
     potential_attackers = all_pieces.reject { |piece| piece == king if king.color != piece.color }
     king_in_check?(potential_attackers, king)
-    can_king_move?(potential_attackers, king)
+    can_king_move = can_king_move?(potential_attackers, king)
+    end_checkmate(king) if can_king_move == false && king.in_check == true
+    end_stalemate(king) if can_king_move == false && king.in_check == false
   end
 
 end
@@ -109,11 +112,57 @@ def can_king_move?(potential_attackers, king)
 
   king.moves.each do |move|
     if !other_pieces_moves.include?(move)
-      puts "can move: #{move}"
       safe_move_found = true
     end
   end
 
-  p safe_move_found
   return safe_move_found
+end
+
+def check_draw?(current_player_color)
+  log_board(current_player_color)
+  
+  if @round == 50 
+    puts "Game has reached 50 moves. Either player can ask for a draw by typing 'draw'"
+    @possible_draw = true
+  elsif threefold_repetition == true
+    puts "A threefold repetition was found. Either player can ask for a draw by typing 'draw'"
+    @possible_draw = true
+  end
+end
+
+def log_board(current_player_color)
+  board_status = []
+  @board.board.each do |row|
+    row.each do |cell|
+      board_status << cell.position unless cell.nil?
+    end
+  end
+
+  board_status << current_player_color
+
+  board_status = Digest::SHA256.hexdigest(board_status.to_s)
+  @archived_boards << board_status
+end
+
+def threefold_repetition
+  @archived_boards.any? { |string| @archived_boards.count(string) >= 3 }
+end
+
+def draw_input(current_player_color)
+  puts "#{current_player_color.capitalize} has asked for a draw. Does the other player agree? ('Yes'/'No')"
+
+  loop do
+    other_player_input = gets.chomp.to_s.downcase
+    
+    if other_player_input == "yes"
+      end_by_draw 
+      return true
+    elsif other_player_input == "no"
+      puts "Game continues."
+      return false
+    else
+      puts "Invalid input."
+    end
+  end
 end

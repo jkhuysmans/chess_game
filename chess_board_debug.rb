@@ -50,10 +50,15 @@ class ChessBoardDebug
 
         #first number: column, second number: row
         
-          @board[7 - 7][7] = King.new([7 - 7, 7], 'white', self)
-          @board[7 - 6][5] = King.new([7 - 6, 5], 'black', self)
-          # @board[7 - 6][7] = Pawn.new([7 - 6, 7], 'black', self)
-          @board[7 - 4][7] = Rook.new([7 - 4, 7], 'black', self)
+        #checkmate & no legal move
+          #@board[7 - 7][7] = King.new([7 - 7, 7], 'white', self)
+          #@board[7 - 6][5] = King.new([7 - 6, 5], 'black', self)
+          #@board[7 - 4][7] = Rook.new([7 - 4, 7], 'black', self)
+
+        #stalemate
+          @board[7 - 7][5] = King.new([7 - 7, 5], 'black', self)
+          @board[7 - 6][5] = Pawn.new([7 - 6, 5], 'white', self)
+          @board[7 - 5][5] = King.new([7 - 5, 5], 'white', self)
 
           #@board[7 - 4][4] = Pawn.new([7 - 4, 4], 'white', self)
           #@board[7 - 4][3] = Pawn.new([7 - 5, 3], 'black', self)
