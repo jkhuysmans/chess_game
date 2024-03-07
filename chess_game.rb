@@ -7,7 +7,7 @@ require './save_game.rb'
 class ChessGame
 
     def initialize
-        @board = ChessBoardDebug.new(self)
+        @board = ChessBoard.new(self)
         @white = [0, []]
         @black = [0, []]
         @round = 1
