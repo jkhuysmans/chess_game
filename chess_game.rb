@@ -71,6 +71,8 @@ class ChessGame
 
             if selected_piece.downcase == "draw" && @draw_possible
                 break if draw_input(current_player_color)
+            elsif selected_piece.downcase == "save"
+                save_game
             else
                 result = selection_valid?(selected_piece)
             end
