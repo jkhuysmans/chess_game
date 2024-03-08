@@ -13,6 +13,7 @@ class ChessGame
         @round = 1
         @archived_boards = []
         @draw_possible = true
+        @game_over = false
     end
 
     def display
@@ -24,6 +25,10 @@ class ChessGame
     end
 
     def round
+        if @game_over
+            return
+            replay
+        end
 
         if @round.odd?
             current_player_color = "white"
@@ -73,6 +78,9 @@ class ChessGame
                 break if draw_input(current_player_color)
             elsif selected_piece.downcase == "save"
                 save_game
+            elsif selected_piece.downcase == "exit"
+                intro
+                return
             else
                 result = selection_valid?(selected_piece)
             end
@@ -192,19 +200,38 @@ class ChessGame
             @black[1] << target.name
         end
 
-        end_game(piece) if target.name == "K"
+        end_checkmate(piece) if target.name == "K"
     end
 
     def end_checkmate(piece)
         puts "Checkmate! #{piece.color.capitalize} wins!"
+        @game_over = true
     end
 
     def end_stalemate(piece)
         puts "Stalemate!"
+        @game_over = true
     end
 
     def end_by_draw
         puts "Game ended in a draw!"
+        @game_over = true
+    end
+
+    def replay
+        puts "Would you like to play another game? (yes/no)"
+
+        loop do
+            player_input = gets.chomp.to_s.downcase
+            
+            if other_player_input == "yes"
+                intro
+            elsif other_player_input == "no"
+              puts "Thank you for playing!"
+            else
+              puts "Invalid input."
+            end
+          end
     end
 
 end

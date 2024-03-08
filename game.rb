@@ -1,8 +1,8 @@
 require './chess_game.rb'
 
 def intro
-    puts "Welcome to chess."
-    puts "Would you like to start a new game ('new'), or load a savestate? ('load')"
+    puts "Welcome to chess. Chess is a strategic board game played between two opponents on a checkered gameboard with 64 squares arranged in an 8×8 grid. Each player commands an army of 16 pieces, with the ultimate goal of checkmating the opponent's king."
+    puts "Would you like to start a new game ('new'), load a savestate ('load'), or exit the game? ('exit')"
 
     loop do
         input = gets.chomp.to_s.downcase
@@ -14,6 +14,10 @@ def intro
             game.start
         elsif input == "load"
             load_game
+        elsif input == "exit"
+            return 
+        else
+            puts "Invalid input. Please enter 'new' to start a new game, 'load' to load a savestate of 'exit' to leave."
         end
     end
 end
@@ -27,6 +31,7 @@ def load_game
 
     if available_saves.empty?
         puts "No available save."
+        sleep(1)
         intro
     else
         available_saves.each_with_index do |save, i|

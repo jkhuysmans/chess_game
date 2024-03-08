@@ -106,10 +106,6 @@ def can_king_move?(potential_attackers, king)
     end
   end
 
-  other_pieces_moves.each do |move|
-       # @board.board[move[0]][move[1]] = Pawn.new([move[0], move[1]], "white", self)
-  end
-
   king.moves.each do |move|
     if !other_pieces_moves.include?(move)
       safe_move_found = true
